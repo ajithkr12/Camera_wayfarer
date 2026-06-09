@@ -1,0 +1,674 @@
+/* ════════════════════════════════════════════════════════
+   scroll.css  —  Premium 3D Carousel Portfolio
+   Camera & Wayfarer
+   ════════════════════════════════════════════════════════ */
+
+/* ── Custom Properties ─────────────────────────────────── */
+:root {
+  --bg:           #080808;
+  --bg-card:      #111111;
+  --bg-card-hover:#161616;
+  --text:         #f0ede8;
+  --text-dim:     #888880;
+  --text-muted:   #3a3a3a;
+  --accent:       #c4a882;        /* warm gold */
+  --accent-dim:   rgba(196,168,130,.25);
+  --border:       rgba(255,255,255,.07);
+  --card-r:       18px;
+  --nav-h:        72px;
+  --font-head:    'Space Grotesk', system-ui, sans-serif;
+  --font-body:    'Inter',         system-ui, sans-serif;
+
+  /* Carousel card dimensions — change these to restyle */
+  --card-w:  360px;
+  --card-h:  490px;
+  --card-gap: 28px;
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html  { color-scheme: dark; font-size: 16px; }
+body  {
+  font-family: var(--font-body);
+  background:  var(--bg);
+  color:       var(--text);
+  overflow-x:  hidden;
+  cursor:      none;           /* replaced by custom cursor */
+}
+img   { display: block; max-width: 100%; }
+a     { color: inherit; text-decoration: none; }
+ul    { list-style: none; }
+button{ cursor: pointer; border: none; background: none; }
+
+/* ── Grain Canvas ──────────────────────────────────────── */
+#grain-canvas {
+  position:       fixed;
+  inset:          0;
+  width:          100%;
+  height:         100%;
+  pointer-events: none;
+  z-index:        9999;
+  opacity:        .055;
+  mix-blend-mode: overlay;
+}
+
+/* ── Custom Cursor ─────────────────────────────────────── */
+.cursor {
+  position:       fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index:        9998;
+}
+.cursor__dot {
+  position:      absolute;
+  width: 7px; height: 7px;
+  background:    var(--text);
+  border-radius: 50%;
+  transform:     translate(-50%, -50%);
+  will-change:   transform;
+}
+.cursor__ring {
+  position:      absolute;
+  width: 38px; height: 38px;
+  border:        1px solid rgba(255,255,255,.45);
+  border-radius: 50%;
+  transform:     translate(-50%, -50%);
+  will-change:   transform;
+}
+
+/* ── Navigation ────────────────────────────────────────── */
+.nav {
+  position:  fixed;
+  top: 0; left: 0; right: 0;
+  height:    var(--nav-h);
+  z-index:   200;
+  transition: background .4s, backdrop-filter .4s;
+}
+.nav--scrolled {
+  background:         rgba(8,8,8,.88);
+  backdrop-filter:    blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border-bottom:      1px solid var(--border);
+}
+.nav__inner {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  height:          100%;
+  padding:         0 48px;
+  max-width:       1600px;
+  margin:          0 auto;
+}
+.nav__logo img { opacity: .9; transition: opacity .3s; }
+.nav__logo:hover img { opacity: 1; }
+.nav__links {
+  display:     flex;
+  align-items: center;
+  gap:         40px;
+}
+.nav__links a {
+  font-family:    var(--font-head);
+  font-size:      .82rem;
+  font-weight:    500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color:          var(--text-dim);
+  transition:     color .3s;
+}
+.nav__links a:hover { color: var(--text); }
+.nav__cta {
+  padding:      10px 26px !important;
+  border:       1px solid var(--border) !important;
+  border-radius:100px;
+  color:        var(--text) !important;
+  transition:   background .3s, border-color .3s !important;
+}
+.nav__cta:hover {
+  background:   var(--text) !important;
+  color:        var(--bg)   !important;
+  border-color: var(--text) !important;
+}
+
+/* ── Hero ──────────────────────────────────────────────── */
+.hero {
+  position:    relative;
+  height:      100vh;
+  min-height:  600px;
+  display:     flex;
+  align-items: flex-end;
+  overflow:    hidden;
+}
+.hero__visual {
+  position: absolute;
+  inset:    0;
+  z-index:  0;
+}
+.hero__visual img {
+  width:         100%;
+  height:        100%;
+  object-fit:    cover;
+  filter:        brightness(.28) saturate(.5);
+  will-change:   transform;
+  transform-origin: center top;
+}
+.hero__visual-overlay {
+  position:   absolute;
+  inset:      0;
+  background: linear-gradient(
+    to bottom,
+    rgba(8,8,8,.15) 0%,
+    rgba(8,8,8,.0)  40%,
+    rgba(8,8,8,.92) 100%
+  );
+}
+.hero__content {
+  position:  relative;
+  z-index:   1;
+  padding:   0 64px 80px;
+  max-width: 1400px;
+  width:     100%;
+}
+.hero__eyebrow {
+  display:        block;
+  font-family:    var(--font-head);
+  font-size:      .75rem;
+  font-weight:    500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color:          var(--accent);
+  margin-bottom:  28px;
+  opacity:        0;           /* animated in by GSAP */
+}
+.hero__title {
+  font-family:    var(--font-head);
+  font-size:      clamp(70px, 10vw, 165px);
+  font-weight:    700;
+  line-height:    .92;
+  letter-spacing: -.035em;
+  color:          var(--text);
+}
+/* Word-split elements created by JS for the reveal animation */
+.word        { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.word-inner  { display: inline-block; will-change: transform; }
+
+.hero__desc {
+  margin-top: 36px;
+  font-size:  1rem;
+  color:      var(--text-dim);
+  line-height:1.75;
+  max-width:  380px;
+  opacity:    0;
+}
+.hero__btn {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            10px;
+  margin-top:     36px;
+  padding:        14px 32px;
+  border:         1px solid rgba(255,255,255,.18);
+  border-radius:  100px;
+  font-family:    var(--font-head);
+  font-size:      .85rem;
+  font-weight:    500;
+  letter-spacing: .06em;
+  color:          var(--text);
+  opacity:        0;
+  transition:     background .35s, border-color .35s, gap .25s;
+}
+.hero__btn:hover {
+  background:   var(--text);
+  color:        var(--bg);
+  border-color: var(--text);
+  gap:          16px;
+}
+.hero__scroll-indicator {
+  position:        absolute;
+  right:           64px;
+  bottom:          48px;
+  z-index:         1;
+  display:         flex;
+  flex-direction:  column;
+  align-items:     center;
+  gap:             14px;
+  opacity:         0;
+}
+.hero__scroll-indicator span {
+  font-family:    var(--font-head);
+  font-size:      .68rem;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+  writing-mode:   vertical-rl;
+}
+.hero__scroll-line {
+  width:      1px;
+  height:     64px;
+  background: linear-gradient(to bottom, var(--accent), transparent);
+  animation:  linePulse 2.2s ease-in-out infinite;
+}
+@keyframes linePulse {
+  0%, 100% { opacity: .3; transform: scaleY(1);    }
+  50%       { opacity: 1;  transform: scaleY(1.18); }
+}
+
+/* ── Intro ─────────────────────────────────────────────── */
+.intro { padding: 130px 64px; }
+.intro__inner { max-width: 1000px; margin: 0 auto; }
+.intro__text {
+  font-family:    var(--font-head);
+  font-size:      clamp(26px, 3.4vw, 52px);
+  font-weight:    300;
+  line-height:    1.45;
+  color:          var(--text);
+  opacity:        0;
+}
+.intro__text em {
+  font-style:  italic;
+  font-weight: 400;
+  color:       var(--accent);
+}
+
+/* ── Carousel Section ──────────────────────────────────── */
+.carousel-section {
+  position:         relative;
+  height:           100vh;
+  min-height:       600px;
+  display:          flex;
+  flex-direction:   column;
+  justify-content:  center;
+  /* overflow hidden clips the track at left/right edges */
+  overflow:         hidden;
+}
+.carousel__header {
+  padding:         0 64px;
+  margin-bottom:   36px;
+  display:         flex;
+  flex-direction:  column;
+  gap:             10px;
+  position:        relative;
+  z-index:         2;
+}
+.carousel__label {
+  font-family:    var(--font-head);
+  font-size:      .73rem;
+  font-weight:    500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color:          var(--accent);
+}
+.section__heading {
+  font-family:    var(--font-head);
+  font-size:      clamp(30px, 3.8vw, 54px);
+  font-weight:    700;
+  letter-spacing: -.025em;
+  color:          var(--text);
+}
+
+/* ── 3D Container & Track ──────────────────────────────── */
+/*
+  perspective: 1400px  ← sets the eye distance; lower = more dramatic 3D
+  perspective-origin   ← keeps the vanishing point at screen center
+  The track's translateX (driven by GSAP) happens INSIDE this 3D space,
+  so card rotateY transforms are always relative to the viewport center.
+*/
+.carousel__container {
+  position:            relative;
+  overflow:            hidden;
+  perspective:         1400px;
+  perspective-origin:  50% 50%;
+}
+.carousel__track {
+  display:           flex;
+  gap:               var(--card-gap);
+  /*
+    Symmetric padding centers the first & last card in the viewport.
+    Formula: 50vw − (card-width / 2)
+    So when x=0, card-1 center = viewport center; at x=−max, card-8 center = viewport center.
+  */
+  padding:           44px calc(50vw - calc(var(--card-w) / 2));
+  width:             max-content;
+  will-change:       transform;
+  transform-style:   preserve-3d;  /* allow children to exist in 3D space */
+}
+
+/* ── Individual Card ───────────────────────────────────── */
+.carousel__card {
+  position:          relative;
+  width:             var(--card-w);
+  height:            var(--card-h);
+  flex-shrink:       0;
+  border-radius:     var(--card-r);
+  overflow:          hidden;
+  cursor:            pointer;
+  will-change:       transform, opacity;
+  transform-style:   preserve-3d;
+  /* start partially transparent; JS sets final opacity */
+  opacity:           .35;
+}
+.carousel__card:hover {
+  box-shadow: 0 28px 70px rgba(0,0,0,.65),
+              0 0 0 1px rgba(255,255,255,.1);
+}
+.card__inner {
+  position:         relative;
+  width:            100%;
+  height:           100%;
+  transform-style:  preserve-3d;
+  backface-visibility: hidden;
+}
+.card__img-wrap {
+  position:      absolute;
+  inset:         0;
+  overflow:      hidden;
+  border-radius: inherit;
+}
+.card__img {
+  width:        100%;
+  height:       100%;
+  object-fit:   cover;
+  will-change:  transform;
+  /* slight oversize prevents white edges during hover-zoom */
+  transform:    scale(1.04);
+  transition:   transform .6s cubic-bezier(.25,.46,.45,.94);
+}
+.carousel__card:hover .card__img { transform: scale(1.1); }
+
+/* Bottom gradient overlay */
+.card__inner::after {
+  content:       '';
+  position:      absolute;
+  inset:         0;
+  border-radius: inherit;
+  background:    linear-gradient(
+    to top,
+    rgba(0,0,0,.88) 0%,
+    rgba(0,0,0,.18) 55%,
+    transparent    100%
+  );
+  z-index:       1;
+  pointer-events:none;
+}
+/* Subtle top vignette */
+.card__inner::before {
+  content:       '';
+  position:      absolute;
+  inset:         0;
+  border-radius: inherit;
+  background:    linear-gradient(
+    to bottom,
+    rgba(0,0,0,.22) 0%,
+    transparent    35%
+  );
+  z-index:       1;
+  pointer-events:none;
+}
+.card__info {
+  position: absolute;
+  bottom:   26px;
+  left:     26px;
+  right:    26px;
+  z-index:  2;
+}
+.card__category {
+  display:        block;
+  font-family:    var(--font-head);
+  font-size:      .68rem;
+  font-weight:    500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color:          var(--accent);
+  margin-bottom:  6px;
+}
+.card__title {
+  font-family:    var(--font-head);
+  font-size:      1.18rem;
+  font-weight:    600;
+  color:          var(--text);
+  line-height:    1.3;
+}
+
+/* ── Carousel Progress Bar ─────────────────────────────── */
+.carousel__progress {
+  position:      relative;
+  height:        1px;
+  background:    var(--border);
+  margin:        24px 64px 0;
+  border-radius: 2px;
+  overflow:      hidden;
+}
+.carousel__progress-bar {
+  position:   absolute;
+  left: 0; top: 0; bottom: 0;
+  width:      0%;
+  background: linear-gradient(to right, var(--accent), var(--accent-dim));
+  border-radius: inherit;
+  transition: width .08s linear;
+}
+.carousel__hint {
+  padding:        14px 64px 0;
+  font-family:    var(--font-head);
+  font-size:      .7rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color:          var(--text-muted);
+}
+
+/* ── Section labels ────────────────────────────────────── */
+.section__label {
+  display:        block;
+  font-family:    var(--font-head);
+  font-size:      .73rem;
+  font-weight:    500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color:          var(--accent);
+  margin-bottom:  14px;
+}
+.section__header { margin-bottom: 56px; }
+
+/* ── Case Studies ──────────────────────────────────────── */
+.case-studies { padding: 130px 0; }
+.case-studies__inner {
+  max-width: 1380px;
+  margin:    0 auto;
+  padding:   0 64px;
+}
+.case-studies__grid {
+  display:               grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:                   24px;
+}
+.case__card {
+  border-radius: var(--card-r);
+  overflow:      hidden;
+  background:    var(--bg-card);
+  border:        1px solid var(--border);
+  transition:    border-color .3s;
+}
+.case__card:hover { border-color: rgba(255,255,255,.14); }
+.case__link   { display: block; }
+.case__img-wrap {
+  overflow: hidden;
+  height:   320px;
+}
+.case__img {
+  width:      100%;
+  height:     100%;
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+}
+.case__card:hover .case__img { transform: scale(1.06); }
+.case__body {
+  padding:        26px;
+  display:        flex;
+  flex-direction: column;
+  gap:            8px;
+}
+.case__category {
+  font-family:    var(--font-head);
+  font-size:      .68rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color:          var(--accent);
+}
+.case__title {
+  font-family: var(--font-head);
+  font-size:   1.15rem;
+  font-weight: 600;
+  color:       var(--text);
+}
+.case__arrow {
+  display:    inline-block;
+  margin-top: 10px;
+  font-size:  1.1rem;
+  color:      var(--text-muted);
+  transition: color .3s, transform .3s;
+}
+.case__card:hover .case__arrow {
+  color:     var(--accent);
+  transform: translateX(5px);
+}
+
+/* ── CTA ───────────────────────────────────────────────── */
+.cta {
+  position:   relative;
+  padding:    170px 64px;
+  text-align: center;
+  overflow:   hidden;
+}
+/* Radial accent glow */
+.cta__glow {
+  position:       absolute;
+  inset:          0;
+  background:     radial-gradient(ellipse at center, rgba(196,168,130,.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta__inner { position: relative; z-index: 1; }
+.cta__title {
+  font-family:    var(--font-head);
+  font-size:      clamp(46px, 7.5vw, 115px);
+  font-weight:    700;
+  line-height:    .94;
+  letter-spacing: -.035em;
+  color:          var(--text);
+  margin-bottom:  64px;
+}
+.cta__title em {
+  font-style:  italic;
+  font-weight: 600;
+  color:       var(--accent);
+}
+.cta__btn {
+  display:        inline-flex;
+  align-items:    center;
+  gap:            14px;
+  padding:        18px 44px;
+  border:         1px solid rgba(255,255,255,.18);
+  border-radius:  100px;
+  font-family:    var(--font-head);
+  font-size:      .9rem;
+  font-weight:    500;
+  letter-spacing: .06em;
+  color:          var(--text);
+  transition:     background .35s, border-color .35s, gap .25s;
+}
+.cta__btn:hover {
+  background:   var(--text);
+  color:        var(--bg);
+  border-color: var(--text);
+  gap:          22px;
+}
+
+/* ── Footer ────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--border);
+  padding:    60px 0 44px;
+}
+.footer__inner {
+  max-width: 1380px;
+  margin:    0 auto;
+  padding:   0 64px;
+}
+.footer__top {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  margin-bottom:   56px;
+  gap:             32px;
+}
+.footer__logo img { opacity: .65; transition: opacity .3s; }
+.footer__logo:hover img { opacity: .9; }
+.footer__nav  { display: flex; gap: 40px; }
+.footer__nav a {
+  font-family:    var(--font-head);
+  font-size:      .84rem;
+  color:          var(--text-dim);
+  transition:     color .3s;
+}
+.footer__nav a:hover { color: var(--text); }
+.footer__socials { display: flex; gap: 28px; }
+.footer__socials a {
+  font-family:    var(--font-head);
+  font-size:      .8rem;
+  color:          var(--text-muted);
+  transition:     color .3s;
+}
+.footer__socials a:hover { color: var(--text); }
+.footer__bottom {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  border-top:      1px solid var(--border);
+  padding-top:     24px;
+}
+.footer__copy, .footer__address {
+  font-size: .78rem;
+  color:     var(--text-muted);
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  :root { --card-w: 320px; --card-h: 440px; }
+}
+
+@media (max-width: 1024px) {
+  .case-studies__grid { grid-template-columns: 1fr 1fr; }
+  .case__img-wrap     { height: 260px; }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-h:  60px;
+    --card-w: 280px;
+    --card-h: 380px;
+    --card-gap: 16px;
+  }
+  .nav__inner                { padding: 0 24px; }
+  .nav__links li:not(:last-child) { display: none; }
+  .hero__content             { padding: 0 24px 64px; }
+  .hero__scroll-indicator    { right: 24px; bottom: 32px; }
+  .intro                     { padding: 80px 24px; }
+  .carousel__header          { padding: 0 24px; }
+  .carousel__track           { padding: 30px calc(50vw - calc(var(--card-w) / 2)); }
+  .carousel__progress        { margin: 20px 24px 0; }
+  .carousel__hint            { padding: 12px 24px 0; }
+  .case-studies__inner       { padding: 0 24px; }
+  .case-studies__grid        { grid-template-columns: 1fr; }
+  .cta                       { padding: 100px 24px; }
+  .footer__inner             { padding: 0 24px; }
+  .footer__top               { flex-direction: column; text-align: center; }
+  .footer__bottom            { flex-direction: column; gap: 12px; text-align: center; }
+  /* hide custom cursor on touch devices */
+  .cursor                    { display: none; }
+  body                       { cursor: auto; }
+}
+
+@media (max-width: 480px) {
+  :root { --card-w: 260px; --card-h: 340px; }
+  .hero__title { font-size: clamp(56px, 14vw, 80px); }
+}
+
+/* ── Utility: reduced motion ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

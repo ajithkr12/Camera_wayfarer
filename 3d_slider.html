@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Product Carousel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --accent: #c8ff00;
+        --bg: #080808;
+        --transition: 0.65s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: var(--bg);
+        overflow: hidden;
+        font-family: "Syne", sans-serif;
+        cursor: none;
+      }
+
+      /* Custom cursor */
+      #cursor {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.2s,
+          height 0.2s,
+          background 0.2s;
+        mix-blend-mode: difference;
+      }
+      #cursor.expand {
+        width: 48px;
+        height: 48px;
+        background: rgba(200, 255, 0, 0.3);
+      }
+
+      /* Scene */
+      .scene {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1400px;
+        perspective-origin: 50% 48%;
+      }
+
+      /* Stage title spanning full width */
+      .stage-label {
+        position: fixed;
+        top: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        z-index: 100;
+      }
+
+      /* Giant hero text behind cards */
+      .hero-title {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(80px, 14vw, 200px);
+        color: #fff;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 0.3s;
+        text-shadow: 0 0 80px rgba(255, 255, 255, 0.08);
+      }
+
+      /* Carousel track */
+      .carousel {
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        transform-style: preserve-3d;
+      }
+
+      /* Card */
+      .card {
+        position: absolute;
+        width: 420px;
+        height: 560px;
+        border-radius: 18px;
+        overflow: hidden;
+        cursor: none;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        transform-style: preserve-3d;
+        transition:
+          transform var(--transition),
+          opacity var(--transition),
+          filter var(--transition);
+        will-change: transform, opacity, filter;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+      }
+
+      .card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+
+      /* Gradient backgrounds per card */
+      .card[data-index="0"] .card-bg {
+        background:
+          radial-gradient(ellipse at 30% 20%, #ff6b9d 0%, transparent 55%),
+          radial-gradient(ellipse at 75% 70%, #c44dff 0%, transparent 55%),
+          radial-gradient(ellipse at 55% 90%, #ff4040 0%, transparent 45%),
+          linear-gradient(135deg, #1a0a0f 0%, #2d0a2e 100%);
+      }
+      .card[data-index="1"] .card-bg {
+        background:
+          radial-gradient(ellipse at 20% 30%, #ffd93d 0%, transparent 50%),
+          radial-gradient(ellipse at 70% 20%, #ff6b35 0%, transparent 50%),
+          radial-gradient(ellipse at 40% 80%, #4ecdc4 0%, transparent 45%),
+          radial-gradient(ellipse at 80% 75%, #a8e6cf 0%, transparent 40%),
+          linear-gradient(135deg, #0f1a0f 0%, #1a1a0a 100%);
+      }
+      .card[data-index="2"] .card-bg {
+        background:
+          radial-gradient(ellipse at 50% 30%, #667eea 0%, transparent 55%),
+          radial-gradient(ellipse at 80% 70%, #764ba2 0%, transparent 50%),
+          radial-gradient(ellipse at 20% 75%, #00d2ff 0%, transparent 45%),
+          linear-gradient(135deg, #060a1f 0%, #0a0619 100%);
+      }
+      .card[data-index="3"] .card-bg {
+        background:
+          radial-gradient(ellipse at 60% 25%, #f7797d 0%, transparent 50%),
+          radial-gradient(ellipse at 25% 65%, #fbd786 0%, transparent 50%),
+          radial-gradient(ellipse at 75% 75%, #c6ffdd 0%, transparent 45%),
+          linear-gradient(135deg, #1a0808 0%, #1a130a 100%);
+      }
+      .card[data-index="4"] .card-bg {
+        background:
+          radial-gradient(ellipse at 40% 20%, #a8edea 0%, transparent 50%),
+          radial-gradient(ellipse at 75% 50%, #fed6e3 0%, transparent 50%),
+          radial-gradient(ellipse at 20% 80%, #96fbc4 0%, transparent 45%),
+          linear-gradient(135deg, #061a19 0%, #1a0f14 100%);
+      }
+      .card[data-index="5"] .card-bg {
+        background:
+          radial-gradient(ellipse at 30% 35%, #ffecd2 0%, transparent 50%),
+          radial-gradient(ellipse at 70% 30%, #fcb69f 0%, transparent 50%),
+          radial-gradient(ellipse at 50% 80%, #ff9a9e 0%, transparent 45%),
+          linear-gradient(135deg, #1a0a08 0%, #1a1508 100%);
+      }
+
+      .card-bg {
+        position: absolute;
+        inset: 0;
+        border-radius: 18px;
+      }
+
+      /* Noise texture overlay */
+      .card-bg::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+        opacity: 0.4;
+        mix-blend-mode: overlay;
+        border-radius: 18px;
+      }
+
+      /* Floating 3D shapes inside each card */
+      .card-shape {
+        position: absolute;
+        border-radius: 50%;
+        mix-blend-mode: screen;
+        filter: blur(1px);
+        animation: floatShape 6s ease-in-out infinite;
+      }
+      @keyframes floatShape {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-18px) rotate(180deg);
+        }
+      }
+
+      /* Card overlay info */
+      .card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 32px 28px 28px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 100%
+        );
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s;
+      }
+      .card-category {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      .card-name {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 28px;
+        color: #fff;
+        letter-spacing: 0.05em;
+      }
+
+      /* View case button */
+      .view-btn {
+        position: fixed;
+        bottom: 130px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 200;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1.5px solid rgba(255, 255, 255, 0.35);
+        color: #fff;
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        padding: 14px 32px;
+        border-radius: 100px;
+        cursor: none;
+        backdrop-filter: blur(10px);
+        transition:
+          background 0.3s,
+          border-color 0.3s,
+          transform 0.3s;
+        white-space: nowrap;
+      }
+      .view-btn:hover {
+        background: rgba(255, 255, 255, 0.22);
+        border-color: rgba(255, 255, 255, 0.7);
+        transform: translateX(-50%) scale(1.04);
+      }
+
+      /* Nav buttons */
+      .nav {
+        position: fixed;
+        bottom: 48px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 200;
+      }
+      .nav-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: none;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+        color: #000;
+      }
+      .nav-btn:hover {
+        transform: scale(1.12);
+        background: #d4ff20;
+      }
+      .nav-btn:active {
+        transform: scale(0.94);
+      }
+      .nav-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      /* Progress dots */
+      .dots {
+        position: fixed;
+        bottom: 62px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        z-index: 200;
+        margin-bottom: 0;
+        /* offset so it appears between title and nav */
+      }
+      .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        transition:
+          background 0.3s,
+          transform 0.3s,
+          width 0.3s;
+      }
+      .dot.active {
+        background: var(--accent);
+        width: 22px;
+        border-radius: 3px;
+      }
+
+      /* Side count */
+      .count {
+        position: fixed;
+        right: 40px;
+        bottom: 50px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.3);
+        z-index: 200;
+      }
+      .count span {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      /* Category label top right */
+      .active-category {
+        position: fixed;
+        top: 32px;
+        right: 40px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        text-transform: uppercase;
+        z-index: 100;
+        transition: opacity 0.4s;
+      }
+
+      /* Scan lines */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+        pointer-events: none;
+        z-index: 500;
+      }
+
+      /* Vignette */
+      .vignette {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 40%,
+          rgba(0, 0, 0, 0.75) 100%
+        );
+        pointer-events: none;
+        z-index: 5;
+      }
+
+      /* Grain overlay */
+      .grain {
+        position: fixed;
+        inset: -200%;
+        width: 400%;
+        height: 400%;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.035;
+        pointer-events: none;
+        z-index: 501;
+        animation: grainShift 0.5s steps(1) infinite;
+      }
+      @keyframes grainShift {
+        0% {
+          transform: translate(0, 0);
+        }
+        20% {
+          transform: translate(-3%, -5%);
+        }
+        40% {
+          transform: translate(5%, 3%);
+        }
+        60% {
+          transform: translate(-4%, 6%);
+        }
+        80% {
+          transform: translate(3%, -4%);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cursor"></div>
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    <div class="grain"></div>
+
+    <div class="stage-label">Creative Studio &mdash; Selected Works</div>
+
+    <div class="hero-title" id="heroTitle">EVOLVE</div>
+
+    <div class="scene">
+      <div class="carousel" id="carousel"></div>
+    </div>
+
+    <button class="view-btn" id="viewBtn">View Case</button>
+
+    <div class="dots" id="dots"></div>
+
+    <div class="nav">
+      <button class="nav-btn" id="prevBtn" aria-label="Previous">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M19 12H5M12 5l-7 7 7 7" />
+        </svg>
+      </button>
+      <button class="nav-btn" id="nextBtn" aria-label="Next">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="count">
+      <span id="countCurrent">01</span> / <span id="countTotal">06</span>
+    </div>
+    <div class="active-category" id="activeCategory">Brand Identity</div>
+
+    <script>
+      const CARDS = [
+        {
+          name: "EVOLVE",
+          category: "Brand Identity",
+          sub: "Visual Design",
+          shapes: ["#ff6b9d", "#c44dff", "#ffb347"],
+        },
+        {
+          name: "INNOVATE",
+          category: "Product Design",
+          sub: "3D Visualization",
+          shapes: ["#ffd93d", "#4ecdc4", "#ff6b35"],
+        },
+        {
+          name: "TRANSFORM",
+          category: "Motion Graphics",
+          sub: "Creative Direction",
+          shapes: ["#667eea", "#00d2ff", "#764ba2"],
+        },
+        {
+          name: "ASCEND",
+          category: "Experience Design",
+          sub: "Interaction Design",
+          shapes: ["#f7797d", "#fbd786", "#c6ffdd"],
+        },
+        {
+          name: "PIONEER",
+          category: "Digital Art",
+          sub: "Concept & Strategy",
+          shapes: ["#a8edea", "#fed6e3", "#96fbc4"],
+        },
+        {
+          name: "RADIANT",
+          category: "Art Direction",
+          sub: "Visual Systems",
+          shapes: ["#ffecd2", "#fcb69f", "#ff9a9e"],
+        },
+      ];
+
+      let current = 0;
+      let autoplayTimer = null;
+      let isAnimating = false;
+
+      const carousel = document.getElementById("carousel");
+      const heroTitle = document.getElementById("heroTitle");
+      const dotsEl = document.getElementById("dots");
+      const countCurrent = document.getElementById("countCurrent");
+      const activeCat = document.getElementById("activeCategory");
+
+      // Build cards
+      CARDS.forEach((data, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.index = i;
+
+        // Random floating shapes
+        const shapeHTML = data.shapes
+          .map((c, si) => {
+            const size = 60 + si * 40;
+            const x = 10 + Math.random() * 70;
+            const y = 10 + Math.random() * 60;
+            const delay = si * 1.8;
+            return `<div class="card-shape" style="
+      width:${size}px;height:${size}px;
+      background:${c};
+      left:${x}%;top:${y}%;
+      opacity:0.55;
+      animation-delay:${delay}s;
+      animation-duration:${5 + si}s;
+    "></div>`;
+          })
+          .join("");
+
+        card.innerHTML = `
+    <div class="card-inner">
+      <div class="card-bg">${shapeHTML}</div>
+      <div class="card-info">
+        <div class="card-category">${data.sub}</div>
+        <div class="card-name">${data.name}</div>
+      </div>
+    </div>
+  `;
+
+        carousel.appendChild(card);
+
+        // Dot
+        const dot = document.createElement("div");
+        dot.className = "dot" + (i === 0 ? " active" : "");
+        dot.addEventListener("click", () => goTo(i));
+        dotsEl.appendChild(dot);
+      });
+
+      document.getElementById("countTotal").textContent = String(
+        CARDS.length,
+      ).padStart(2, "0");
+
+      function getCardTransform(offset) {
+        // offset: relative position from center (0 = center, ±1, ±2...)
+        const absOff = Math.abs(offset);
+        const rotY = offset * 42; // degrees
+        const transX = offset * 340; // px
+        const transZ = -absOff * 160; // depth recession
+        const scale = absOff === 0 ? 1 : absOff === 1 ? 0.82 : 0.65;
+        const opacity =
+          absOff === 0 ? 1 : absOff === 1 ? 0.7 : absOff === 2 ? 0.45 : 0;
+
+        return { rotY, transX, transZ, scale, opacity };
+      }
+
+      function positionCards() {
+        const cards = carousel.querySelectorAll(".card");
+        const n = CARDS.length;
+
+        cards.forEach((card) => {
+          const i = parseInt(card.dataset.index);
+          // Compute shortest circular distance
+          let offset = i - current;
+          if (offset > n / 2) offset -= n;
+          if (offset < -n / 2) offset += n;
+
+          const { rotY, transX, transZ, scale, opacity } =
+            getCardTransform(offset);
+
+          card.style.transform = `
+      translate(-50%, -50%)
+      translateX(${transX}px)
+      translateZ(${transZ}px)
+      rotateY(${rotY}deg)
+      scale(${scale})
+    `;
+          card.style.opacity = opacity;
+          card.style.zIndex = 100 - Math.abs(offset);
+          card.style.filter =
+            Math.abs(offset) > 0
+              ? `brightness(${0.55 + 0.45 / Math.abs(offset)})`
+              : "brightness(1)";
+          card.style.pointerEvents = offset === 0 ? "auto" : "none";
+
+          // Show card info only on center
+          const info = card.querySelector(".card-info");
+          if (offset === 0) {
+            info.style.opacity = "1";
+            info.style.transform = "translateY(0)";
+          } else {
+            info.style.opacity = "0";
+            info.style.transform = "translateY(12px)";
+          }
+        });
+      }
+
+      function updateUI() {
+        const data = CARDS[current];
+        heroTitle.textContent = data.name;
+        countCurrent.textContent = String(current + 1).padStart(2, "0");
+        activeCat.textContent = data.category;
+
+        const dots = dotsEl.querySelectorAll(".dot");
+        dots.forEach((d, i) => d.classList.toggle("active", i === current));
+      }
+
+      function goTo(index, direction) {
+        if (isAnimating) return;
+        isAnimating = true;
+        current = ((index % CARDS.length) + CARDS.length) % CARDS.length;
+
+        // Hero title fade
+        heroTitle.style.opacity = "0";
+        heroTitle.style.transform = "translate(-50%, -50%) scale(0.95)";
+
+        positionCards();
+        updateUI();
+
+        setTimeout(() => {
+          heroTitle.style.transition =
+            "opacity 0.45s ease, transform 0.45s ease";
+          heroTitle.style.opacity = "1";
+          heroTitle.style.transform = "translate(-50%, -50%) scale(1)";
+        }, 80);
+
+        setTimeout(() => {
+          isAnimating = false;
+          heroTitle.style.transition = "";
+        }, 700);
+      }
+
+      function next() {
+        goTo(current + 1);
+      }
+      function prev() {
+        goTo(current - 1);
+      }
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        next();
+        resetAutoplay();
+      });
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        prev();
+        resetAutoplay();
+      });
+
+      // Click on side cards to navigate
+      carousel.addEventListener("click", (e) => {
+        const card = e.target.closest(".card");
+        if (!card) return;
+        const i = parseInt(card.dataset.index);
+        if (i !== current) {
+          goTo(i);
+          resetAutoplay();
+        }
+      });
+
+      // Keyboard
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight") {
+          next();
+          resetAutoplay();
+        }
+        if (e.key === "ArrowLeft") {
+          prev();
+          resetAutoplay();
+        }
+      });
+
+      // Autoplay
+      function startAutoplay() {
+        autoplayTimer = setInterval(next, 3800);
+      }
+      function resetAutoplay() {
+        clearInterval(autoplayTimer);
+        startAutoplay();
+      }
+
+      // Pause on hover over scene
+      document
+        .querySelector(".scene")
+        .addEventListener("mouseenter", () => clearInterval(autoplayTimer));
+      document
+        .querySelector(".scene")
+        .addEventListener("mouseleave", startAutoplay);
+
+      // Custom cursor
+      const cursor = document.getElementById("cursor");
+      document.addEventListener("mousemove", (e) => {
+        cursor.style.left = e.clientX + "px";
+        cursor.style.top = e.clientY + "px";
+      });
+      document.querySelectorAll("button, .card").forEach((el) => {
+        el.addEventListener("mouseenter", () => cursor.classList.add("expand"));
+        el.addEventListener("mouseleave", () =>
+          cursor.classList.remove("expand"),
+        );
+      });
+
+      // Swipe / drag
+      let touchStartX = 0;
+      document.addEventListener(
+        "touchstart",
+        (e) => (touchStartX = e.touches[0].clientX),
+      );
+      document.addEventListener("touchend", (e) => {
+        const diff = touchStartX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          diff > 0 ? next() : prev();
+          resetAutoplay();
+        }
+      });
+
+      // Mouse wheel
+      let wheelLocked = false;
+      document.addEventListener(
+        "wheel",
+        (e) => {
+          if (wheelLocked) return;
+          wheelLocked = true;
+          e.deltaY > 0 || e.deltaX > 0 ? next() : prev();
+          resetAutoplay();
+          setTimeout(() => (wheelLocked = false), 800);
+        },
+        { passive: true },
+      );
+
+      // Init
+      positionCards();
+      updateUI();
+      startAutoplay();
+
+      // View btn pulse
+      document.getElementById("viewBtn").addEventListener("click", () => {
+        const btn = document.getElementById("viewBtn");
+        btn.style.background = "rgba(200,255,0,0.2)";
+        btn.style.borderColor = "var(--accent)";
+        btn.style.color = "var(--accent)";
+        setTimeout(() => {
+          btn.style.background = "";
+          btn.style.borderColor = "";
+          btn.style.color = "";
+        }, 600);
+      });
+    </script>
+  </body>
+</html>

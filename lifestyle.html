@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Camera & Wayfarer - Fashion & Commercial Photography</title>
+
+    <!-- CSS -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat%3A500%2C700%7CRoboto+Condensed:700%7CRoboto%3A700&display=swap"
+      rel="stylesheet"
+    />
+    <link type="text/css" rel="stylesheet" href="css/line-awesome.css" />
+    <link type="text/css" rel="stylesheet" href="css/photoswipe.css" />
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="css/default-skin/default-skin.css"
+    />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/responsive.css" />
+
+    <style>
+      .dyn-masonry {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 6px;
+        gap: 8px;
+      }
+      @media (max-width: 1024px) {
+        .dyn-masonry {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 6px;
+        }
+      }
+      @media (max-width: 600px) {
+        .dyn-masonry {
+          grid-template-columns: 1fr;
+          gap: 6px;
+        }
+      }
+      .dyn-masonry .ashade-gallery-item {
+        overflow: hidden;
+        border-radius: 3px;
+      }
+      .dyn-masonry .ashade-gallery-item a {
+        display: block;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+      }
+      .dyn-masonry .ashade-gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.45s ease;
+      }
+      .dyn-masonry .ashade-gallery-item a:hover img {
+        transform: scale(1.05);
+      }
+      .dyn-masonry .ashade-gallery-item a::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(0, 0, 0, 0);
+        transition: background 0.35s ease;
+        pointer-events: none;
+      }
+      .dyn-masonry .ashade-gallery-item a:hover::after {
+        background: rgba(0, 0, 0, 0.18);
+      }
+    </style>
+
+    <!-- Icon -->
+    <link rel="icon" href="img/favicon.webp" sizes="32x32" />
+  </head>
+
+  <body class="has-spotlight ashade-smooth-scroll">
+    <!-- Header -->
+    <header id="ashade-header">
+      <div class="ashade-header-inner">
+        <div class="ashade-logo-block">
+          <a href="index.html" class="ashade-logo is-retina">
+            <img
+              src="img/Camera_logo.webp"
+              alt="Ashade Logo"
+              width="128"
+              height="110"
+            />
+          </a>
+        </div>
+        <div class="ashade-nav-block">
+          <nav class="ashade-nav">
+            <ul class="main-menu">
+              <li class="menu-item-has-children">
+                <a href="index.html">Home</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="about.html">About</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="index.html">Services</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="teams.html">Teams</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="clients.html">Clients</a>
+              </li>
+              <li><a href="contacts.html">Contact</a></li>
+              <li>
+                <a href="#" class="ashade-aside-toggler">
+                  <span class="ashade-aside-toggler__icon01"></span>
+                  <span class="ashade-aside-toggler__icon02"></span>
+                  <span class="ashade-aside-toggler__icon03"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="ashade-page-title-wrap">
+      <h1 class="ashade-page-title"><span>services</span> Lifestyle</h1>
+    </div>
+
+    <main class="ashade-content-wrap">
+      <div class="ashade-content-scroll">
+        <div class="ashade-content">
+          <section class="ashade-section">
+            <div class="ashade-row">
+              <div class="ashade-col col-12">
+                <p class="ashade-intro">
+                  Life in the city is stormy and unpredictable. Walking the
+                  streets of the city you can see his soul, warmed by the rays
+                  of the sun and brightened by the smiles of the inhabitants.
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="ashade-section">
+            <div class="dyn-masonry" id="lifestyle-gallery-container"></div>
+          </section>
+        </div>
+        <!-- .ashade-content -->
+
+        <!-- Footer -->
+        <footer id="ashade-footer">
+          <div class="ashade-footer-inner">
+            <div class="ashade-footer__socials">
+              <ul class="ashade-socials">
+                <li><a href="#">Fb</a></li>
+                <li><a href="#">Tw</a></li>
+                <li><a href="#">In</a></li>
+                <li><a href="#">Yt</a></li>
+              </ul>
+            </div>
+            <div class="ashade-footer__copyright">
+              Copyright &copy; 2026. All Rights Reserved.
+            </div>
+          </div>
+        </footer>
+      </div>
+      <!-- .ashade-content-scroll -->
+    </main>
+
+    <div class="ashade-to-top-wrap ashade-back-wrap">
+      <div class="ashade-back is-to-top">
+        <span>Back to</span>
+        <span>Top</span>
+      </div>
+    </div>
+
+    <!-- Aside Bar -->
+    <aside id="ashade-aside">
+      <a href="#" class="ashade-aside-close">Close Sidebar</a>
+      <div class="ashade-aside-inner">
+        <div class="ashade-aside-content">
+          <div class="ashade-widget ashade-widget--about">
+            <div class="ashade-widget--about__head">
+              <img
+                src="img/services/fashion/IMG_9270_1.webp"
+                alt="Andrew Shade"
+              />
+              <h5><span>Welcome</span> camera& Wayfarer</h5>
+            </div>
+            <p>
+              Camera & Wayfarer is a photography venture specializing in
+              high-fashion, commercial, product, and e-commerce photography.
+            </p>
+            <p class="align-right">
+              <a href="about.html" class="ashade-learn-more">Learn More</a>
+            </p>
+          </div>
+          <!-- .ashade-widget -->
+
+          <div class="ashade-widget ashade-widget--contacts">
+            <h5 class="ashade-widget-title">
+              <span>My contacts and socials</span> How to find me
+            </h5>
+            <ul class="ashade-contact-details__list">
+              <li>
+                <i class="ashade-contact-icon la la-map-marker"></i>
+                27/2271,27/2272,219 Mavelipuram Onam Park Zone, Kakkanad,
+                Ernakulam, Kerala, 682030
+              </li>
+              <li>
+                <i class="ashade-contact-icon la la-phone"></i>
+                <a href="tel:+11234567890">+91 9920310721 / +91 79078 03340</a>
+              </li>
+              <li>
+                <i class="ashade-contact-icon la la-envelope"></i>
+                <a href="mailto:a.shade@example.com"
+                  >cameraandwayfarerinfo@gmail.com</a
+                >
+              </li>
+              <li class="ashade-contact-socials">
+                <i class="ashade-contact-icon la la-share-alt"></i>
+                <a href="facebook.com" target="_blank">Fb</a>
+                <a href="twitter.com" target="_blank">Tw</a>
+                <a href="instagram.com" target="_blank">In</a>
+                <a href="500px.com" target="_blank">Px</a>
+              </li>
+            </ul>
+            <p class="align-right">
+              <a href="contacts.html" class="ashade-learn-more">Get in touch</a>
+            </p>
+          </div>
+          <!-- .ashade-widget -->
+        </div>
+        <!-- .ashade-aside-content -->
+      </div>
+      <!-- .ashade-aside-inner -->
+    </aside>
+
+    <!-- UI Elements -->
+    <div class="ashade-menu-overlay"></div>
+    <div class="ashade-aside-overlay"></div>
+    <div class="ashade-cursor is-inactive">
+      <span class="ashade-cursor-circle"></span>
+      <span class="ashade-cursor-slider"></span>
+      <span class="ashade-cursor-close ashade-cursor-label">Close</span>
+      <span class="ashade-cursor-zoom ashade-cursor-label">Zoom</span>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/gallery-init.js"></script>
+    <script src="js/lifestyle-gallery.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/jquery.lazy.min.js"></script>
+    <script src="js/photoswipe.min.js"></script>
+    <script src="js/photoswipe-ui-default.min.js"></script>
+    <script src="js/core.js"></script>
+  </body>
+</html>

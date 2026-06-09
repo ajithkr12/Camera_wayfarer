@@ -1,0 +1,769 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Camera & Wayfarer - Fashion & Commercial Photography</title>
+
+    <!-- CSS -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat%3A500%2C700%7CRoboto+Condensed:700%7CRoboto%3A700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link type="text/css" rel="stylesheet" href="css/line-awesome.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/responsive.css" />
+
+    <style>
+      /* === Fit all content in 100vh, no scroll === */
+      .ashade-content-wrap {
+        overflow: hidden !important;
+      }
+      .ashade-content-scroll {
+        height: 100% !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      .ashade-content {
+        flex: 1 !important;
+        min-height: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+        padding-bottom: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
+      .ashade-content > section.ashade-section:first-child {
+        flex: 0 0 auto;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+      }
+      .ashade-content > section.ashade-section:has(.pd3d-wrap) {
+        flex: 1 !important;
+        min-height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      footer#ashade-footer {
+        flex: 0 0 auto;
+      }
+
+      /* === 3D Product Carousel === */
+      .pd3d-wrap {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        /* background: #1b1b1f; */
+        --accent: #e07c0b;
+        --transition: 0.65s cubic-bezier(0.77, 0, 0.18, 1);
+        font-family: "Syne", sans-serif;
+      }
+      .pd3d-wrap .pd3d-scanlines {
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 4px
+        );
+        pointer-events: none;
+        z-index: 500;
+      }
+      .pd3d-wrap .pd3d-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(
+          ellipse at center,
+          transparent 40%,
+          rgba(0, 0, 0, 0.75) 100%
+        );
+        pointer-events: none;
+        z-index: 5;
+      }
+      .pd3d-wrap .pd3d-grain {
+        position: absolute;
+        inset: -200%;
+        width: 400%;
+        height: 400%;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+        opacity: 0.035;
+        pointer-events: none;
+        z-index: 501;
+        animation: pd3dGrainShift 0.5s steps(1) infinite;
+      }
+      @keyframes pd3dGrainShift {
+        0% {
+          transform: translate(0, 0);
+        }
+        20% {
+          transform: translate(-3%, -5%);
+        }
+        40% {
+          transform: translate(5%, 3%);
+        }
+        60% {
+          transform: translate(-4%, 6%);
+        }
+        80% {
+          transform: translate(3%, -4%);
+        }
+        100% {
+          transform: translate(0, 0);
+        }
+      }
+      .pd3d-wrap .pd3d-stage-label {
+        position: absolute;
+        top: 32px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-family: "Syne", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.35em;
+        color: rgba(255, 255, 255, 0.35);
+        text-transform: uppercase;
+        z-index: 100;
+        white-space: nowrap;
+      }
+      .pd3d-wrap .pd3d-hero-title {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(80px, 14vw, 200px);
+        color: #fff;
+        letter-spacing: 0.02em;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 10;
+        transition: opacity 0.3s;
+        text-shadow: 0 0 80px rgba(255, 255, 255, 0.08);
+      }
+      .pd3d-wrap .pd3d-scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        perspective: 1400px;
+        perspective-origin: 50% 48%;
+      }
+      .pd3d-wrap .pd3d-carousel {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+      }
+      .pd3d-wrap .pd3d-card {
+        position: absolute;
+        width: 420px;
+        height: 560px;
+        border-radius: 18px;
+        overflow: hidden;
+        top: 50%;
+        left: 50%;
+        transform-origin: center center;
+        transform-style: preserve-3d;
+        transition:
+          transform var(--transition),
+          opacity var(--transition),
+          filter var(--transition);
+        will-change: transform, opacity, filter;
+        box-shadow:
+          0 30px 80px rgba(0, 0, 0, 0.6),
+          0 0 0 1px rgba(255, 255, 255, 0.06);
+      }
+      .pd3d-wrap .pd3d-card-inner {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .pd3d-wrap .pd3d-card-bg {
+        position: absolute;
+        inset: 0;
+        border-radius: 18px;
+        overflow: hidden;
+      }
+      .pd3d-wrap .pd3d-card-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .pd3d-wrap .pd3d-card-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 32px 28px 28px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.7) 0%,
+          transparent 100%
+        );
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s;
+      }
+      .pd3d-wrap .pd3d-card-category {
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      .pd3d-wrap .pd3d-card-name {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 28px;
+        color: #fff;
+        letter-spacing: 0.05em;
+      }
+      .pd3d-wrap .pd3d-card.is-active {
+        cursor: pointer;
+      }
+      .pd3d-wrap .pd3d-nav {
+        position: absolute;
+        bottom: 48px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 12px;
+        z-index: 200;
+      }
+      .pd3d-wrap .pd3d-nav-btn {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: var(--accent);
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition:
+          transform 0.2s,
+          background 0.2s;
+        color: #000;
+        padding: 0px;
+      }
+      .pd3d-wrap .pd3d-nav-btn:hover {
+        transform: scale(1.12);
+        background: #ffffff;
+      }
+      .pd3d-wrap .pd3d-nav-btn:active {
+        transform: scale(0.94);
+      }
+      .pd3d-wrap .pd3d-nav-btn i {
+        font-size: 18px;
+        line-height: 1;
+      }
+      .pd3d-wrap .pd3d-dots {
+        position: absolute;
+        bottom: 16px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        z-index: 200;
+      }
+      .pd3d-wrap .pd3d-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        cursor: pointer;
+        transition:
+          background 0.3s,
+          width 0.3s;
+      }
+      .pd3d-wrap .pd3d-dot.active {
+        background: var(--accent);
+        width: 22px;
+        border-radius: 3px;
+      }
+      .pd3d-wrap .pd3d-count {
+        position: absolute;
+        right: 40px;
+        bottom: 50px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 13px;
+        letter-spacing: 0.15em;
+        color: rgba(255, 255, 255, 0.3);
+        z-index: 200;
+      }
+      .pd3d-wrap .pd3d-count span {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    </style>
+
+    <!-- Icon -->
+    <link rel="icon" href="img/favicon.webp" sizes="32x32" />
+  </head>
+
+  <body class="has-spotlight ashade-smooth-scroll">
+    <!-- Header -->
+    <header id="ashade-header">
+      <div class="ashade-header-inner">
+        <div class="ashade-logo-block">
+          <a href="index.html" class="ashade-logo is-retina">
+            <img
+              src="img/Camera_logo.webp"
+              alt="Ashade Logo"
+              width="128"
+              height="110"
+            />
+          </a>
+        </div>
+        <div class="ashade-nav-block">
+          <nav class="ashade-nav">
+            <ul class="main-menu">
+              <li class="menu-item-has-children">
+                <a href="index.html">Home</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="about.html">About</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="index.html">Services</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="teams.html">Teams</a>
+              </li>
+              <li class="menu-item-has-children">
+                <a href="clients.html">Clients</a>
+              </li>
+              <li><a href="contacts.html">Contact</a></li>
+              <li>
+                <a href="#" class="ashade-aside-toggler">
+                  <span class="ashade-aside-toggler__icon01"></span>
+                  <span class="ashade-aside-toggler__icon02"></span>
+                  <span class="ashade-aside-toggler__icon03"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="ashade-page-title-wrap">
+      <h1 class="ashade-page-title">
+        <span>What we are offering</span> My Services
+      </h1>
+    </div>
+
+    <main class="ashade-content-wrap">
+      <div class="ashade-content-scroll">
+        <div class="ashade-content">
+          <!-- <section class="ashade-section">
+            <div class="ashade-row">
+              <div class="ashade-col col-12" style="margin: 0%">
+                <p class="ashade-intro">
+                  Photography is my passion. Through the lens the world looks
+                  different and i would like to show you this difference. You
+                  can see it in my albums that are presented here.
+                </p>
+              </div>
+            </div>
+          </section> -->
+          <section class="ashade-section">
+            <div class="pd3d-wrap">
+              <div class="pd3d-scanlines"></div>
+              <div class="pd3d-vignette"></div>
+              <div class="pd3d-grain"></div>
+              <!-- <div class="pd3d-stage-label">Camera &amp; Wayfarer &mdash; Selected Services</div> -->
+              <div class="pd3d-hero-title" id="pd3dHeroTitle">PRODUCT</div>
+              <div class="pd3d-scene">
+                <div class="pd3d-carousel" id="pd3dCarousel"></div>
+              </div>
+              <div class="pd3d-dots" id="pd3dDots"></div>
+              <div class="pd3d-nav">
+                <button
+                  class="pd3d-nav-btn"
+                  id="pd3dPrevBtn"
+                  aria-label="Previous"
+                >
+                  <i class="bi bi-arrow-left"></i>
+                </button>
+                <button class="pd3d-nav-btn" id="pd3dNextBtn" aria-label="Next">
+                  <i class="bi bi-arrow-right"></i>
+                </button>
+              </div>
+              <div class="pd3d-count">
+                <span id="pd3dCountCurrent">01</span> /
+                <span id="pd3dCountTotal">06</span>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- .ashade-content -->
+
+        <!-- Footer -->
+        <footer id="ashade-footer">
+          <div class="ashade-footer-inner">
+            <div class="ashade-footer__socials">
+              <ul class="ashade-socials">
+                <li><a href="#">Fb</a></li>
+                <li><a href="#">Tw</a></li>
+                <li><a href="#">In</a></li>
+                <li><a href="#">Yt</a></li>
+              </ul>
+            </div>
+            <div class="ashade-footer__copyright">
+              Copyright &copy; 2026. All Rights Reserved.
+            </div>
+          </div>
+        </footer>
+      </div>
+      <!-- .ashade-content-scroll -->
+    </main>
+
+    <div class="ashade-to-top-wrap ashade-back-wrap">
+      <div class="ashade-back is-to-top">
+        <span>Back to</span>
+        <span>Top</span>
+      </div>
+    </div>
+
+    <!-- Aside Bar -->
+    <aside id="ashade-aside">
+      <a href="#" class="ashade-aside-close">Close Sidebar</a>
+      <div class="ashade-aside-inner">
+        <div class="ashade-aside-content">
+          <div class="ashade-widget ashade-widget--about">
+            <div class="ashade-widget--about__head">
+              <img
+                src="img/services/fashion/IMG_9270_1.webp"
+                alt="Andrew Shade"
+              />
+              <h5><span>Welcome</span> camera& Wayfarer</h5>
+            </div>
+            <p>
+              Camera & Wayfarer is a photography venture specializing in
+              high-fashion, commercial, product, and e-commerce photography.
+            </p>
+            <p class="align-right">
+              <a href="about.html" class="ashade-learn-more">Learn More</a>
+            </p>
+          </div>
+          <!-- .ashade-widget -->
+
+          <div class="ashade-widget ashade-widget--contacts">
+            <h5 class="ashade-widget-title">
+              <span>My contacts and socials</span> How to find me
+            </h5>
+            <ul class="ashade-contact-details__list">
+              <li>
+                <i class="ashade-contact-icon la la-map-marker"></i>
+                27/2271,27/2272,219 Mavelipuram Onam Park Zone, Kakkanad,
+                Ernakulam, Kerala, 682030
+              </li>
+              <li>
+                <i class="ashade-contact-icon la la-phone"></i>
+                <a href="tel:+11234567890">+91 9920310721 / +91 79078 03340</a>
+              </li>
+              <li>
+                <i class="ashade-contact-icon la la-envelope"></i>
+                <a href="mailto:a.shade@example.com"
+                  >cameraandwayfarerinfo@gmail.com</a
+                >
+              </li>
+              <li class="ashade-contact-socials">
+                <i class="ashade-contact-icon la la-share-alt"></i>
+                <a href="facebook.com" target="_blank">Fb</a>
+                <a href="twitter.com" target="_blank">Tw</a>
+                <a href="instagram.com" target="_blank">In</a>
+                <a href="500px.com" target="_blank">Px</a>
+              </li>
+            </ul>
+            <p class="align-right">
+              <a href="contacts.html" class="ashade-learn-more">Get in touch</a>
+            </p>
+          </div>
+          <!-- .ashade-widget -->
+        </div>
+        <!-- .ashade-aside-content -->
+      </div>
+      <!-- .ashade-aside-inner -->
+    </aside>
+
+    <!-- UI Elements -->
+    <div class="ashade-menu-overlay"></div>
+    <div class="ashade-aside-overlay"></div>
+    <div class="ashade-cursor is-inactive">
+      <span class="ashade-cursor-circle"></span>
+      <span class="ashade-cursor-slider"></span>
+      <span class="ashade-cursor-close ashade-cursor-label">Close</span>
+      <span class="ashade-cursor-zoom ashade-cursor-label">Zoom</span>
+    </div>
+
+    <!-- SCRIPTS -->
+
+    <script async src="//www.instagram.com/embed.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/masonry.min.js"></script>
+    <script src="js/core.js"></script>
+
+    <!-- 3D Product Carousel -->
+    <script>
+      (function () {
+        const CARDS = [
+          {
+            name: "PRODUCT",
+            category: "Product Photography",
+            sub: "Commercial",
+            link: "products.html",
+            img: "img/services/product.webp",
+          },
+          {
+            name: "LIFESTYLE",
+            category: "Lifestyle",
+            sub: "Fashion & Editorial",
+            link: "lifestyle.html",
+            img: "img/services/lifestyle.webp",
+          },
+          {
+            name: "ARCHITECTURE",
+            category: "Architecture",
+            sub: "Aerial & Structural",
+            link: "architecture.html",
+            img: "img/services/architecture.webp",
+          },
+          {
+            name: "JEWELLERY",
+            category: "Jewellery",
+            sub: "Fine Products",
+            link: "jewellery.html",
+            img: "img/services/jewellery.webp",
+          },
+          {
+            name: "CORPORATE",
+            category: "Corporate",
+            sub: "Brand & Business",
+            link: "corporate.html",
+            img: "img/services/corporate.webp",
+          },
+          {
+            name: "FOODS AND BEVERAGES",
+            category: "Food & Beverages",
+            sub: "Culinary Art",
+            link: "foods.html",
+            img: "img/services/food.webp",
+          },
+          {
+            name: "RESORTS",
+            category: "Resorts",
+            sub: "Hospitality & Travel",
+            link: "resorts.html",
+            img: "img/services/resorts.webp",
+          },
+        ];
+
+        let current = 0;
+        let autoplayTimer = null;
+        let isAnimating = false;
+
+        const carousel = document.getElementById("pd3dCarousel");
+        const heroTitle = document.getElementById("pd3dHeroTitle");
+        const dotsEl = document.getElementById("pd3dDots");
+        const countCur = document.getElementById("pd3dCountCurrent");
+
+        CARDS.forEach((data, i) => {
+          const card = document.createElement("div");
+          card.className = "pd3d-card";
+          card.dataset.index = i;
+
+          card.innerHTML = `
+                <div class="pd3d-card-inner">
+                    <div class="pd3d-card-bg">
+                        <img src="${data.img}" alt="${data.category}" />
+                    </div>
+                    <div class="pd3d-card-info">
+                        <div class="pd3d-card-category">${data.sub}</div>
+                        <div class="pd3d-card-name">${data.name}</div>
+                    </div>
+                </div>`;
+
+          carousel.appendChild(card);
+
+          const dot = document.createElement("div");
+          dot.className = "pd3d-dot" + (i === 0 ? " active" : "");
+          dot.addEventListener("click", () => goTo(i));
+          dotsEl.appendChild(dot);
+        });
+
+        document.getElementById("pd3dCountTotal").textContent = String(
+          CARDS.length,
+        ).padStart(2, "0");
+
+        function getCardTransform(offset) {
+          const abs = Math.abs(offset);
+          return {
+            rotY: offset * 42,
+            transX: offset * 340,
+            transZ: -abs * 160,
+            scale: abs === 0 ? 1 : abs === 1 ? 0.82 : 0.65,
+            opacity: abs === 0 ? 1 : abs === 1 ? 0.7 : abs === 2 ? 0.45 : 0,
+          };
+        }
+
+        function positionCards() {
+          const cards = carousel.querySelectorAll(".pd3d-card");
+          const n = CARDS.length;
+          cards.forEach((card) => {
+            const i = parseInt(card.dataset.index);
+            let offset = i - current;
+            if (offset > n / 2) offset -= n;
+            if (offset < -n / 2) offset += n;
+            const { rotY, transX, transZ, scale, opacity } =
+              getCardTransform(offset);
+            card.style.transform = `translate(-50%,-50%) translateX(${transX}px) translateZ(${transZ}px) rotateY(${rotY}deg) scale(${scale})`;
+            card.style.opacity = opacity;
+            card.style.zIndex = 100 - Math.abs(offset);
+            card.style.filter =
+              Math.abs(offset) > 0
+                ? `brightness(${0.55 + 0.45 / Math.abs(offset)})`
+                : "brightness(1)";
+            card.style.pointerEvents = offset === 0 ? "auto" : "none";
+            card.classList.toggle("is-active", offset === 0);
+            const info = card.querySelector(".pd3d-card-info");
+            info.style.opacity = offset === 0 ? "1" : "0";
+            info.style.transform =
+              offset === 0 ? "translateY(0)" : "translateY(12px)";
+          });
+        }
+
+        function updateUI() {
+          const data = CARDS[current];
+          heroTitle.textContent = data.name;
+          countCur.textContent = String(current + 1).padStart(2, "0");
+          dotsEl
+            .querySelectorAll(".pd3d-dot")
+            .forEach((d, i) => d.classList.toggle("active", i === current));
+        }
+
+        function goTo(index) {
+          if (isAnimating) return;
+          isAnimating = true;
+          current = ((index % CARDS.length) + CARDS.length) % CARDS.length;
+          heroTitle.style.opacity = "0";
+          heroTitle.style.transform = "translate(-50%,-50%) scale(0.95)";
+          positionCards();
+          updateUI();
+          setTimeout(() => {
+            heroTitle.style.transition =
+              "opacity 0.45s ease, transform 0.45s ease";
+            heroTitle.style.opacity = "1";
+            heroTitle.style.transform = "translate(-50%,-50%) scale(1)";
+          }, 80);
+          setTimeout(() => {
+            isAnimating = false;
+            heroTitle.style.transition = "";
+          }, 700);
+        }
+
+        function next() {
+          goTo(current + 1);
+        }
+        function prev() {
+          goTo(current - 1);
+        }
+
+        document.getElementById("pd3dNextBtn").addEventListener("click", () => {
+          next();
+          resetAutoplay();
+        });
+        document.getElementById("pd3dPrevBtn").addEventListener("click", () => {
+          prev();
+          resetAutoplay();
+        });
+
+        carousel.addEventListener("click", (e) => {
+          const card = e.target.closest(".pd3d-card");
+          if (!card) return;
+          const i = parseInt(card.dataset.index);
+          if (i === current) {
+            window.location.href = CARDS[current].link;
+          } else {
+            goTo(i);
+            resetAutoplay();
+          }
+        });
+
+        function startAutoplay() {
+          autoplayTimer = setInterval(next, 3800);
+        }
+        function resetAutoplay() {
+          clearInterval(autoplayTimer);
+          startAutoplay();
+        }
+
+        const scene = document.querySelector(".pd3d-scene");
+        scene.addEventListener("mouseenter", () =>
+          clearInterval(autoplayTimer),
+        );
+        scene.addEventListener("mouseleave", startAutoplay);
+
+        let touchStartX = 0;
+        const wrap = document.querySelector(".pd3d-wrap");
+        wrap.addEventListener(
+          "touchstart",
+          (e) => (touchStartX = e.touches[0].clientX),
+        );
+        wrap.addEventListener("touchend", (e) => {
+          const diff = touchStartX - e.changedTouches[0].clientX;
+          if (Math.abs(diff) > 50) {
+            diff > 0 ? next() : prev();
+            resetAutoplay();
+          }
+        });
+
+        let wheelLocked = false;
+        wrap.addEventListener(
+          "wheel",
+          (e) => {
+            if (wheelLocked) return;
+            wheelLocked = true;
+            e.deltaY > 0 || e.deltaX > 0 ? next() : prev();
+            resetAutoplay();
+            setTimeout(() => (wheelLocked = false), 800);
+          },
+          { passive: true },
+        );
+
+        positionCards();
+        updateUI();
+        startAutoplay();
+      })();
+    </script>
+  </body>
+</html>
