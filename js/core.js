@@ -1161,7 +1161,7 @@ ashade.init = function() {
                 ashade.pswp.gallery[this_gallery].push(this_item);
             }
 
-            $this.data('count', ashade.pswp.gallery[this_gallery].length - 1);
+            $this.attr('data-count', ashade.pswp.gallery[this_gallery].length - 1);
         });
 
         jQuery(document).on('click', '.ashade-lightbox-link', function(e) {

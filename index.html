@@ -297,28 +297,40 @@
         display: none;
       }
 
+      .hero-panel--mobile {
+        display: none;
+      }
+
       @media (max-width: 767px) {
         .hero-panel--center {
           display: none;
         }
 
+        #hero-left,
+        #hero-right {
+          display: none;
+        }
+
+        .hero-panel--mobile {
+          display: block;
+        }
+
         .hero-panel--left,
         .hero-panel--right {
           position: absolute;
-          top: 0;
           left: 0;
           width: 100%;
-          height: 100%;
+          height: 50%;
           flex: none;
         }
 
         .hero-panel--left {
-          clip-path: url(#hero-left-clip);
+          top: 0;
           z-index: 1;
         }
 
         .hero-panel--right {
-          clip-path: url(#hero-right-clip);
+          top: 50%;
           z-index: 2;
         }
 
@@ -419,25 +431,6 @@
       </div>
     </header>
 
-    <!-- SVG clip-path definitions for mobile curved split -->
-    <svg
-      id="hero-clip-defs"
-      aria-hidden="true"
-      style="position: absolute; width: 0; height: 0; overflow: hidden"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <!-- Left panel: full-width, show area left of the S-curve -->
-        <clipPath id="hero-left-clip" clipPathUnits="objectBoundingBox">
-          <path d="M 0 0 L 0.5 0 L 0.5 1 L 0 1 Z" />
-        </clipPath>
-        <!-- Right panel: full-width, show area right of the S-curve -->
-        <clipPath id="hero-right-clip" clipPathUnits="objectBoundingBox">
-          <path d="M 0.5 0 L 1 0 L 1 1 L 0.5 1 Z" />
-        </clipPath>
-      </defs>
-    </svg>
-
     <!-- Home Background: 3-Panel Hero -->
     <div class="ashade-home-background ashade-page-background" id="hero-3panel">
       <!-- Left panel: Photography cycling images -->
@@ -448,6 +441,16 @@
         <img src="img/hero/4.webp" class="hero-slide" alt="" />
         <img src="img/hero/5.webp" class="hero-slide" alt="" />
         <img src="img/hero/6.webp" class="hero-slide" alt="" />
+      </div>
+      <!-- Left panel (mobile): Photography cycling images -->
+      <div
+        class="hero-panel hero-panel--left hero-panel--mobile"
+        id="hero-left-mobile"
+      >
+        <img src="img/hero/mobile_1.png" class="hero-slide active" alt="" />
+        <img src="img/hero/mobile_2.png" class="hero-slide" alt="" />
+        <img src="img/hero/mobile_3.png" class="hero-slide" alt="" />
+        <img src="img/hero/mobile_4.png" class="hero-slide" alt="" />
       </div>
       <!-- Center panel: Static image -->
       <div class="hero-panel hero-panel--center" id="hero-center">
@@ -462,7 +465,7 @@
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            d="M 50 0 L 50 100"
+            d="M 0 50 L 100 50"
             stroke="rgba(255,255,255,0.5)"
             stroke-width="2"
             fill="none"
@@ -492,6 +495,19 @@
         </video>
         <video class="hero-slide" muted playsinline>
           <source src="img/hero/v6.webm" type="video/webm" />
+        </video>
+        <div class="hero-video-icon">&#9654;</div>
+      </div>
+      <!-- Right panel (mobile): Videography cycling videos -->
+      <div
+        class="hero-panel hero-panel--right hero-panel--mobile"
+        id="hero-right-mobile"
+      >
+        <video class="hero-slide active" autoplay muted playsinline>
+          <source src="img/hero/mobile_v1.webm" type="video/webm" />
+        </video>
+        <video class="hero-slide" muted playsinline>
+          <source src="img/hero/mobile_v2.webm" type="video/webm" />
         </video>
         <div class="hero-video-icon">&#9654;</div>
       </div>
@@ -1040,8 +1056,13 @@
         }
 
         setTimeout(function () {
-          startSlideshow("hero-left");
-          startVideoSlideshow("hero-right");
+          if (window.matchMedia("(max-width: 767px)").matches) {
+            startSlideshow("hero-left-mobile");
+            startVideoSlideshow("hero-right-mobile");
+          } else {
+            startSlideshow("hero-left");
+            startVideoSlideshow("hero-right");
+          }
         }, 2000);
       })();
     </script>
