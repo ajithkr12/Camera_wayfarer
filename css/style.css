@@ -902,6 +902,12 @@ header#ashade-header.scrolled .ashade-header-inner {
 
 /* --- Logo --- */
 
+.ashade-logo-block {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .ashade-logo {
   display: block;
 }
@@ -910,6 +916,25 @@ header#ashade-header.scrolled .ashade-header-inner {
   display: block;
   width: 100%;
   height: auto;
+}
+
+.ashade-logo-secondary {
+  display: block;
+  height: 42px;
+}
+
+.ashade-logo-secondary img {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.ashade-logo-divider {
+  display: block;
+  width: 1px;
+  height: 30px;
+  margin: 0 20px;
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 /* --- Navigation --- */
@@ -1136,7 +1161,7 @@ nav.ashade-nav ul.main-menu li.current-menu-ancestor > a {
 .ashade-content-scroll.is-centered .ashade-content {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
 }
 
 /* --- Page Title --- */
@@ -3429,4 +3454,10 @@ section.ashade-section.team {
   color: #a09080;
   line-height: 1.6;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .ashade-footer__copyright {
+    font-size: 10px;
+  }
 }

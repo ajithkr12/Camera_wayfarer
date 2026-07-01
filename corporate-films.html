@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Camera & Wayfarer - Corporate Films</title>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat%3A500%2C700%7CRoboto+Condensed:700%7CRoboto%3A700&display=swap" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="css/line-awesome.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+    <link type="text/css" rel="stylesheet" href="css/responsive.css" />
+    <style>
+      .fv-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+      @media (max-width: 1024px) { .fv-grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 600px)  { .fv-grid { grid-template-columns: 1fr; } }
+      .fv-item {
+        position: relative;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #111;
+        cursor: pointer;
+        aspect-ratio: 16 / 9;
+      }
+      .fv-item video { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.45s ease; }
+      .fv-item:hover video { transform: scale(1.04); }
+      .fv-item .fv-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: background 0.3s; }
+      .fv-item:hover .fv-overlay { background: rgba(0,0,0,0.15); }
+      .fv-item .fv-play { width: 60px; height: 60px; border-radius: 50%; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; transition: transform 0.25s, background 0.25s; flex-shrink: 0; }
+      .fv-item:hover .fv-play { transform: scale(1.12); background: #fff; }
+      .fv-item .fv-play svg { width: 22px; height: 22px; fill: #111; margin-left: 3px; }
+      .fv-item .fv-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px 16px 14px; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%); font-family: "Montserrat", sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; opacity: 0; transform: translateY(6px); transition: opacity 0.3s, transform 0.3s; }
+      .fv-item:hover .fv-label { opacity: 1; transform: translateY(0); }
+      .fv-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
+      .fv-modal.is-open { display: flex; }
+      .fv-modal-inner { position: relative; width: 90vw; max-width: 1100px; }
+      .fv-modal-inner video { width: 100%; border-radius: 6px; display: block; }
+      .fv-modal-close { position: absolute; top: -40px; right: 0; background: none; border: none; padding: 0; color: #fff; font-size: 28px; cursor: pointer; line-height: 1; opacity: 0.8; transition: opacity 0.2s; font-family: sans-serif; }
+      .fv-modal-close:hover { opacity: 1; }
+    </style>
+    <link rel="icon" href="img/favicon.webp" sizes="32x32" />
+  </head>
+  <body class="has-spotlight ashade-smooth-scroll">
+    <header id="ashade-header">
+      <div class="ashade-header-inner">
+        <div class="ashade-logo-block">
+          <a href="index.html" class="ashade-logo is-retina">
+            <img src="img/Camera_logo.webp" alt="Ashade Logo" width="128" height="110" />
+          </a>
+          <span class="ashade-logo-divider" aria-hidden="true"></span>
+          <a href="index.html" class="ashade-logo-secondary">
+            <img
+              src="img/cw_production_logo.webp"
+              alt="CW Production Logo"
+              width="358"
+              height="271"
+            />
+          </a>
+        </div>
+        <div class="ashade-nav-block">
+          <nav class="ashade-nav">
+            <ul class="main-menu">
+              <li class="menu-item-has-children"><a href="index.html">Home</a></li>
+              <li class="menu-item-has-children"><a href="about.html">About</a></li>
+              <li class="menu-item-has-children"><a href="index.html">Services</a></li>
+              <li class="menu-item-has-children"><a href="teams.html">Teams</a></li>
+              <li class="menu-item-has-children"><a href="clients.html">Clients</a></li>
+              <li><a href="contacts.html">Contact</a></li>
+              <li>
+                <a href="#" class="ashade-aside-toggler">
+                  <span class="ashade-aside-toggler__icon01"></span>
+                  <span class="ashade-aside-toggler__icon02"></span>
+                  <span class="ashade-aside-toggler__icon03"></span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <div class="ashade-page-title-wrap">
+      <h1 class="ashade-page-title"><span>services</span> Corporate Films</h1>
+    </div>
+
+    <main class="ashade-content-wrap">
+      <div class="ashade-content-scroll">
+        <div class="ashade-content">
+          <section class="ashade-section">
+            <div class="ashade-row">
+              <div class="ashade-col col-12">
+                <p class="ashade-intro">
+                  Professional stories, authentically told. From company profiles to executive interviews,
+                  we help organisations communicate their vision and values with clarity and confidence.
+                </p>
+              </div>
+            </div>
+          </section>
+          <section class="ashade-section">
+            <div class="fv-grid">
+
+              <div class="fv-item" data-src="video/Intr_PO_Fi.webm" data-title="Corporate Film">
+                <video src="video/Intr_PO_Fi.webm" muted loop preload="metadata" playsinline></video>
+                <div class="fv-overlay">
+                  <div class="fv-play">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                </div>
+                <div class="fv-label">Corporate Film</div>
+              </div>
+
+            </div>
+          </section>
+        </div>
+
+        <footer id="ashade-footer">
+          <div class="ashade-footer-inner">
+            <div class="ashade-footer__socials">
+              <ul class="ashade-socials">
+                <li><a href="#">Fb</a></li>
+                <li><a href="#">Tw</a></li>
+                <li><a href="#">In</a></li>
+                <li><a href="#">Yt</a></li>
+              </ul>
+            </div>
+            <div class="ashade-footer__copyright">Copyright &copy; 2026. All Rights Reserved. Designed by <a href="https://www.tinqbit.com" target="_blank" rel="noopener">Tinqbit</a></div>
+          </div>
+        </footer>
+      </div>
+    </main>
+
+    <div class="ashade-to-top-wrap ashade-back-wrap">
+      <div class="ashade-back is-to-top"><span>Back to</span><span>Top</span></div>
+    </div>
+
+    <aside id="ashade-aside">
+      <a href="#" class="ashade-aside-close">Close Sidebar</a>
+      <div class="ashade-aside-inner">
+        <div class="ashade-aside-content">
+          <div class="ashade-widget ashade-widget--about">
+            <div class="ashade-widget--about__head">
+              <img src="img/services/fashion/IMG_9270_1.webp" alt="Andrew Shade" />
+              <h5><span>Welcome</span> camera&amp; Wayfarer</h5>
+            </div>
+            <p>Camera &amp; Wayfarer is a photography venture specializing in high-fashion, commercial, product, and e-commerce photography.</p>
+            <p class="align-right"><a href="about.html" class="ashade-learn-more">Learn More</a></p>
+          </div>
+          <div class="ashade-widget ashade-widget--contacts">
+            <h5 class="ashade-widget-title"><span>Our contacts and socials</span> How to find us</h5>
+            <ul class="ashade-contact-details__list">
+              <li><i class="ashade-contact-icon la la-map-marker"></i>27/2271,27/2272,219 Mavelipuram Onam Park Zone, Kakkanad, Ernakulam, Kerala, 682030</li>
+              <li><i class="ashade-contact-icon la la-phone"></i><a href="tel:+919920310721">+91 9920310721 / +91 79078 03340</a></li>
+              <li><i class="ashade-contact-icon la la-envelope"></i><a href="mailto:cameraandwayfarerinfo@gmail.com">cameraandwayfarerinfo@gmail.com</a></li>
+              <li class="ashade-contact-socials">
+                <i class="ashade-contact-icon la la-share-alt"></i>
+                <a href="facebook.com" target="_blank">Fb</a>
+                <a href="twitter.com" target="_blank">Tw</a>
+                <a href="https://www.instagram.com/camera_and_wayfarer/" target="_blank">In</a>
+                <a href="500px.com" target="_blank">Px</a>
+              </li>
+            </ul>
+            <p class="align-right"><a href="contacts.html" class="ashade-learn-more">Get in touch</a></p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="fv-modal" id="fvModal">
+      <div class="fv-modal-inner">
+        <button class="fv-modal-close" id="fvModalClose">&times;</button>
+        <video id="fvModalVideo" controls playsinline></video>
+      </div>
+    </div>
+
+    <div class="ashade-menu-overlay"></div>
+    <div class="ashade-aside-overlay"></div>
+    <div class="ashade-cursor is-inactive">
+      <span class="ashade-cursor-circle"></span>
+      <span class="ashade-cursor-slider"></span>
+      <span class="ashade-cursor-close ashade-cursor-label">Close</span>
+      <span class="ashade-cursor-zoom ashade-cursor-label">Zoom</span>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/gsap.min.js"></script>
+    <script src="js/core.js"></script>
+    <script>
+      (function () {
+        var modal = document.getElementById("fvModal");
+        var modalVideo = document.getElementById("fvModalVideo");
+        var closeBtn = document.getElementById("fvModalClose");
+        document.querySelectorAll(".fv-item").forEach(function (item) {
+          var vid = item.querySelector("video");
+          item.addEventListener("mouseenter", function () { vid.play(); });
+          item.addEventListener("mouseleave", function () { vid.pause(); vid.currentTime = 0; });
+          item.addEventListener("click", function () {
+            modalVideo.src = item.dataset.src;
+            modalVideo.load();
+            modalVideo.play();
+            modal.classList.add("is-open");
+          });
+        });
+        function closeModal() { modal.classList.remove("is-open"); modalVideo.pause(); modalVideo.src = ""; }
+        closeBtn.addEventListener("click", closeModal);
+        modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
+      })();
+    </script>
+  </body>
+</html>

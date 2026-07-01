@@ -646,11 +646,26 @@ body section.ashade-section.hide-on-desktop {
   }
 
   a.ashade-aside-toggler {
+    display: none;
     margin-left: 15px;
   }
 
   a.ashade-aside-toggler span {
     top: 16px;
+  }
+
+  .ashade-logo {
+    width: 160px !important;
+    height: auto !important;
+  }
+
+  .ashade-logo-secondary {
+    height: 30px;
+  }
+
+  .ashade-logo-divider {
+    height: 22px;
+    margin: 0 12px;
   }
 
   /* --- Mobile Menu --- */
@@ -1566,7 +1581,17 @@ body section.ashade-section.hide-on-desktop {
 
 @media only screen and (max-width: 370px) {
   .ashade-logo {
-    width: 200px !important;
+    width: 130px !important;
+    height: auto !important;
+  }
+
+  .ashade-logo-secondary {
+    height: 24px;
+  }
+
+  .ashade-logo-divider {
+    height: 24px;
+    margin: 0 10px;
   }
 }
 
@@ -1619,7 +1644,7 @@ body section.ashade-section.hide-on-desktop {
   }
 
   .team-profile-card__photo {
-    height: 240px;
+    height: 380px;
   }
 
   .team-profile-card__info {
@@ -1643,6 +1668,6 @@ body section.ashade-section.hide-on-desktop {
   }
 
   .team-profile-card__photo {
-    height: 300px;
+    height: 440px;
   }
 }

@@ -1368,7 +1368,7 @@ ashade.loading = function() {
         logoDelay = 0.1;
     }
     // Load Logo
-    gsap.from('.ashade-logo', {
+    gsap.from('.ashade-logo, .ashade-logo-secondary', {
         x: '-50%',
         opacity: 0,
         duration: 0.5,
@@ -1677,7 +1677,7 @@ ashade.change_location = function(this_href) {
     }
 
     // Remove Logo
-    gsap.to('.ashade-logo', {
+    gsap.to('.ashade-logo, .ashade-logo-secondary', {
         css: {
             x: '-50%',
             opacity: 0,
