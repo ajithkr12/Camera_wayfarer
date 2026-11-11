@@ -36,8 +36,8 @@
       .fv-item:hover .fv-label { opacity: 1; transform: translateY(0); }
       .fv-modal { display: none; position: fixed; inset: 0; z-index: 9999; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; }
       .fv-modal.is-open { display: flex; }
-      .fv-modal-inner { position: relative; width: 90vw; max-width: 1100px; }
-      .fv-modal-inner video { width: 100%; border-radius: 6px; display: block; }
+      .fv-modal-inner { position: relative; }
+      .fv-modal-inner video { width: auto; height: auto; max-width: min(90vw, 1100px); max-height: calc(100vh - 120px); max-height: calc(100dvh - 120px); border-radius: 6px; display: block; }
       .fv-modal-close { position: absolute; top: -40px; right: 0; background: none; border: none; padding: 0; color: #fff; font-size: 28px; cursor: pointer; line-height: 1; opacity: 0.8; transition: opacity 0.2s; font-family: sans-serif; }
       .fv-modal-close:hover { opacity: 1; }
     </style>

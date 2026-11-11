@@ -13,7 +13,6 @@
       content="See the leading brands and businesses that trust Camera & Wayfarer for fashion, commercial and brand photography & film production."
     />
     <link rel="canonical" href="https://cameraandwayfarer.com/clients.html" />
-
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Our Clients | Camera & Wayfarer" />
@@ -30,7 +29,6 @@
       content="https://cameraandwayfarer.com/img/Camera_logo.webp"
     />
     <meta property="og:site_name" content="Camera & Wayfarer" />
-
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Our Clients | Camera & Wayfarer" />
@@ -42,7 +40,6 @@
       name="twitter:image"
       content="https://cameraandwayfarer.com/img/Camera_logo.webp"
     />
-
     <!-- CSS -->
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat%3A500%2C700%7CRoboto+Condensed:700%7CRoboto%3A700&display=swap"
@@ -57,40 +54,17 @@
     />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="css/responsive.css" />
-
     <style>
-      /* ── 100vh lock ── */
-      .ashade-content-wrap {
-        overflow: hidden !important;
-      }
-      .ashade-content-scroll {
-        height: calc(100vh - 180px);
-        overflow: hidden !important;
-      }
-      .ashade-content {
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
-        padding: 0 !important;
-        overflow: hidden !important;
-      }
+      /* Content area keeps the site's normal (framework-default) sizing — no forced viewport-height lock — so the left-panel text, stats row and footer are never clipped, however tall a given screen's usable height ends up being (e.g. shorter MacBook viewports). The page's own smooth-scroll JS already centers this section when it fits one screen and scrolls it when it doesn't, same as every other page on the site. */
       .ashade-section {
-        flex: 1 1 auto !important;
-        height: 100% !important;
         padding: 36px 48px !important;
         box-sizing: border-box !important;
-        overflow: hidden !important;
-      }
-
-      /* ── Split wrapper ── */
+      } /* ── Split wrapper ── */
       .clients-split {
         display: flex;
-        height: 100%;
         gap: 56px;
         align-items: stretch;
-      }
-
-      /* ── Left panel ── */
+      } /* ── Left panel ── */
       .clients-left {
         flex: 0 0 34%;
         display: flex;
@@ -183,11 +157,10 @@
         letter-spacing: 0.14em;
         line-height: 1.4;
         max-width: 90px;
-      }
-
-      /* ── Right panel: 3 marquee columns ── */
+      } /* ── Right panel: 3 marquee columns ── Fixed, viewport-relative height so the infinite-scroll columns stay windowed/cropped regardless of how tall the left text panel or footer end up being — independent of the page's own height. */
       .clients-right {
         flex: 1;
+        height: calc(100vh - 252px);
         display: flex;
         gap: 14px;
         overflow: hidden;
@@ -205,17 +178,13 @@
           #000 88%,
           transparent 100%
         );
-      }
-
-      /* ── Single column ── */
+      } /* ── Single column ── */
       .logo-col {
         flex: 1;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-      }
-
-      /* ── Scrolling track ── */
+      } /* ── Scrolling track ── */
       .logo-col-track {
         display: flex;
         flex-direction: column;
@@ -231,7 +200,6 @@
       .logo-col-track.down.fast {
         animation-duration: 20s;
       }
-
       @keyframes logoDown {
         0% {
           transform: translateY(-50%);
@@ -248,12 +216,9 @@
           transform: translateY(-50%);
         }
       }
-
       .clients-right:hover .logo-col-track {
         animation-play-state: paused;
-      }
-
-      /* ── Logo card (bigger) ── */
+      } /* ── Logo card (bigger) ── */
       .client-logo-card {
         background: rgba(255, 255, 255, 0.05);
         border: 1px solid rgba(255, 255, 255, 0.08);
@@ -334,15 +299,16 @@
       .client-logo-card:hover img {
         filter: grayscale(0) brightness(1.15);
         transform: scale(1.08);
-      }
-
-      /* ── Responsive ── */
+      } /* ── Responsive ── */
       @media (max-width: 1024px) {
         .ashade-section {
           padding: 28px 32px !important;
         }
         .clients-split {
           gap: 36px;
+        }
+        .clients-right {
+          height: calc(100vh - 236px);
         }
       }
       @media (max-width: 900px) {
@@ -388,11 +354,9 @@
         }
       }
     </style>
-
     <!-- Icon -->
     <link rel="icon" href="img/favicon.webp" sizes="32x32" />
   </head>
-
   <body class="has-spotlight ashade-smooth-scroll">
     <!-- Header -->
     <header id="ashade-header">
@@ -447,22 +411,14 @@
         </div>
       </div>
     </header>
-
     <!-- Content -->
     <div class="ashade-page-title-wrap">
       <h1 class="ashade-page-title"><span>Meet our</span> Clients</h1>
     </div>
-
     <main class="ashade-content-wrap">
       <div class="ashade-content-scroll">
         <div class="ashade-content">
-          <!-- <section class="ashade-section">
-                    <div class="ashade-row">
-                        <div class="ashade-col col-12">
-                            <p class="ashade-intro">The beauty of nature is truly mesmerizing and poetic. And when nature is at the same time decorated with a wide palette of colors - it is simply indescribable.</p>
-                        </div>
-                    </div>
-                </section> -->
+          <!-- <section class="ashade-section"> <div class="ashade-row"> <div class="ashade-col col-12"> <p class="ashade-intro">The beauty of nature is truly mesmerizing and poetic. And when nature is at the same time decorated with a wide palette of colors - it is simply indescribable.</p> </div> </div> </section> -->
           <section class="ashade-section">
             <div class="clients-split">
               <!-- Left: text panel -->
@@ -488,7 +444,7 @@
                 </div>
                 <div class="clients-stats-row">
                   <div class="clients-stat">
-                    <span class="clients-stat__num">50<sup>+</sup></span>
+                    <span class="clients-stat__num">100<sup>+</sup></span>
                     <span class="clients-stat__label"
                       >Brands &amp; Counting</span
                     >
@@ -499,7 +455,6 @@
                   </div>
                 </div>
               </div>
-
               <!-- Right: vertical marquee columns -->
               <div class="clients-right">
                 <div class="logo-col">
@@ -559,7 +514,10 @@
                       />
                     </div>
                     <div class="client-logo-card">
-                      <img src="img/gallery/clients/Moulavi.webp" alt="Moulavi" />
+                      <img
+                        src="img/gallery/clients/Moulavi.webp"
+                        alt="Moulavi"
+                      />
                     </div>
                     <div class="client-logo-card">
                       <img
@@ -628,7 +586,10 @@
                       />
                     </div>
                     <div class="client-logo-card">
-                      <img src="img/gallery/clients/Moulavi.webp" alt="Moulavi" />
+                      <img
+                        src="img/gallery/clients/Moulavi.webp"
+                        alt="Moulavi"
+                      />
                     </div>
                     <div class="client-logo-card">
                       <img
@@ -706,12 +667,7 @@
                         alt="Southern Panorama Indriya Resorts & Spa"
                       />
                     </div>
-                    <div class="client-logo-card">
-                      <img
-                        src="img/gallery/clients/Chill-Factor.webp"
-                        alt="Chill Factor"
-                      />
-                    </div>
+
                     <div class="client-logo-card">
                       <img src="img/gallery/clients/Coopin.webp" alt="Coopin" />
                     </div>
@@ -775,12 +731,7 @@
                         alt="Southern Panorama Indriya Resorts & Spa"
                       />
                     </div>
-                    <div class="client-logo-card">
-                      <img
-                        src="img/gallery/clients/Chill-Factor.webp"
-                        alt="Chill Factor"
-                      />
-                    </div>
+    
                     <div class="client-logo-card">
                       <img src="img/gallery/clients/Coopin.webp" alt="Coopin" />
                     </div>
@@ -845,15 +796,8 @@
                     <div class="client-logo-card">
                       <img src="img/gallery/clients/Phases.webp" alt="Phases" />
                     </div>
-                    <div class="client-logo-card">
-                      <img
-                        src="img/gallery/clients/Playaza.webp"
-                        alt="Playaza"
-                      />
-                    </div>
-                    <div class="client-logo-card">
-                      <img src="img/gallery/clients/TBJ.webp" alt="TBJ" />
-                    </div>
+
+
                     <div class="client-logo-card">
                       <img
                         src="img/gallery/clients/Proditiz-Pvt-Ltd.webp"
@@ -911,15 +855,8 @@
                     <div class="client-logo-card">
                       <img src="img/gallery/clients/Phases.webp" alt="Phases" />
                     </div>
-                    <div class="client-logo-card">
-                      <img
-                        src="img/gallery/clients/Playaza.webp"
-                        alt="Playaza"
-                      />
-                    </div>
-                    <div class="client-logo-card">
-                      <img src="img/gallery/clients/TBJ.webp" alt="TBJ" />
-                    </div>
+
+                 
                   </div>
                 </div>
               </div>
@@ -927,7 +864,6 @@
           </section>
         </div>
         <!-- .ashade-content -->
-
         <!-- Footer -->
         <footer id="ashade-footer">
           <div class="ashade-footer-inner">
@@ -950,7 +886,6 @@
       </div>
       <!-- .ashade-content-scroll -->
     </main>
-
     <div
       class="ashade-to-top-wrap ashade-back-wrap"
       style="
@@ -960,11 +895,9 @@
       "
     >
       <a href="index.html" class="ashade-back" style="text-decoration: none">
-        <span>Back to</span>
-        <span>Home</span>
+        <span>Back to</span> <span>Home</span>
       </a>
     </div>
-
     <!-- Aside Bar -->
     <aside id="ashade-aside">
       <a href="#" class="ashade-aside-close">Close Sidebar</a>
@@ -987,7 +920,6 @@
             </p>
           </div>
           <!-- .ashade-widget -->
-
           <div class="ashade-widget ashade-widget--contacts">
             <h5 class="ashade-widget-title">
               <span>Our contacts and socials</span> How to find us
@@ -1030,7 +962,6 @@
       </div>
       <!-- .ashade-aside-inner -->
     </aside>
-
     <!-- UI Elements -->
     <div class="ashade-menu-overlay"></div>
     <div class="ashade-aside-overlay"></div>
@@ -1040,7 +971,6 @@
       <span class="ashade-cursor-close ashade-cursor-label">Close</span>
       <span class="ashade-cursor-zoom ashade-cursor-label">Zoom</span>
     </div>
-
     <!-- SCRIPTS -->
     <script src="js/jquery.min.js"></script>
     <script src="js/masonry.min.js"></script>

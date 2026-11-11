@@ -8,22 +8,43 @@
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Camera & Wayfarer | Fashion & Commercial Photography Studio</title>
-    <meta name="description" content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories." />
+    <meta
+      name="description"
+      content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories."
+    />
     <link rel="canonical" href="https://cameraandwayfarer.com/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Camera & Wayfarer | Fashion & Commercial Photography Studio" />
-    <meta property="og:description" content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories." />
+    <meta
+      property="og:title"
+      content="Camera & Wayfarer | Fashion & Commercial Photography Studio"
+    />
+    <meta
+      property="og:description"
+      content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories."
+    />
     <meta property="og:url" content="https://cameraandwayfarer.com/" />
-    <meta property="og:image" content="https://cameraandwayfarer.com/img/Camera_logo.webp" />
+    <meta
+      property="og:image"
+      content="https://cameraandwayfarer.com/img/Camera_logo.webp"
+    />
     <meta property="og:site_name" content="Camera & Wayfarer" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Camera & Wayfarer | Fashion & Commercial Photography Studio" />
-    <meta name="twitter:description" content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories." />
-    <meta name="twitter:image" content="https://cameraandwayfarer.com/img/Camera_logo.webp" />
+    <meta
+      name="twitter:title"
+      content="Camera & Wayfarer | Fashion & Commercial Photography Studio"
+    />
+    <meta
+      name="twitter:description"
+      content="Camera & Wayfarer is a fashion and commercial photography & film studio crafting brand films, product photography, corporate videos and creative visual stories."
+    />
+    <meta
+      name="twitter:image"
+      content="https://cameraandwayfarer.com/img/Camera_logo.webp"
+    />
 
     <!-- CSS -->
     <link
@@ -400,9 +421,100 @@
     <!-- Icon -->
     <link rel="icon" href="img/favicon.ico" sizes="any" />
     <link rel="icon" href="img/favicon.webp" type="image/webp" sizes="32x32" />
+
+    <!-- Preloader -->
+    <style>
+      /* The shared stylesheet keeps body invisible/non-interactive until
+         a jQuery "is-init" class lands, with no transition (an instant
+         snap). Our own overlay now owns the loading experience on this
+         page, so make sure the body is never the thing hiding it. */
+      body.ashade-home-template {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+      }
+      #ashade-preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000000;
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity 0.6s ease,
+          visibility 0.6s ease;
+      }
+      #ashade-preloader.is-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      #ashade-preloader img {
+        width: 140px;
+        height: auto;
+        opacity: 0;
+        animation: ashade-preloader-fade 0.7s ease forwards;
+      }
+      @keyframes ashade-preloader-fade {
+        from {
+          opacity: 0;
+          transform: scale(0.94);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #ashade-preloader img {
+          animation: none;
+          opacity: 1;
+        }
+      }
+    </style>
   </head>
 
   <body class="ashade-home-template has-spotlight ashade-smooth-scroll">
+    <!-- Preloader: shows for at least 1s (or until the page has actually
+         finished loading, whichever is longer) so heavy hero assets never
+         flash in unstyled. Homepage only. -->
+    <div id="ashade-preloader" aria-hidden="true">
+      <img src="img/Camera_logo.webp" alt="" width="128" height="110" />
+    </div>
+    <script>
+      (function () {
+        var MIN_MS = 500;
+        var start = Date.now();
+        function hidePreloader() {
+          var el = document.getElementById("ashade-preloader");
+          if (!el) return;
+          el.classList.add("is-hidden");
+          el.addEventListener(
+            "transitionend",
+            function () {
+              el.remove();
+            },
+            { once: true },
+          );
+        }
+        function onReady() {
+          var elapsed = Date.now() - start;
+          var remaining = Math.max(MIN_MS - elapsed, 0);
+          setTimeout(hidePreloader, remaining);
+        }
+        if (document.readyState === "complete") {
+          onReady();
+        } else {
+          window.addEventListener("load", onReady);
+        }
+        // Safety net: never let the preloader block the site for long
+        // if some asset stalls (e.g. a slow video).
+        setTimeout(hidePreloader, 4000);
+      })();
+    </script>
+
     <!-- Header -->
     <header id="ashade-header">
       <div class="ashade-header-inner">
@@ -510,13 +622,13 @@
       <!-- Right panel: Videography cycling videos -->
       <div class="hero-panel hero-panel--right" id="hero-right">
         <video class="hero-slide active" autoplay muted playsinline>
-          <source src="video/Product_Fi.webm" type="video/webm" />
+          <source src="video/optimized/Product_Fi.webm" type="video/webm" />
         </video>
         <video class="hero-slide" muted playsinline>
-          <source src="video/Intr_PO_Fi.webm " type="video/webm" />
+          <source src="video/optimized/Intr_PO_Fi.webm" type="video/webm" />
         </video>
         <video class="hero-slide" muted playsinline>
-          <source src="video/CW_Product_Fi.webm" type="video/webm" />
+          <source src="video/optimized/CW_Product_Fi.webm" type="video/webm" />
         </video>
         <!-- <div class="hero-video-icon">&#9654;</div> -->
       </div>
@@ -527,13 +639,13 @@
         id="hero-right-mobile"
       >
         <video class="hero-slide active" autoplay muted playsinline>
-          <source src="video/Product_Fi.webm" type="video/webm" />
+          <source src="video/optimized/Product_Fi.webm" type="video/webm" />
         </video>
         <video class="hero-slide" muted playsinline>
-          <source src="video/Intr_PO_Fi.webm" type="video/webm" />
+          <source src="video/optimized/Intr_PO_Fi.webm" type="video/webm" />
         </video>
         <video class="hero-slide" muted playsinline>
-          <source src="video/CW_Product_Fi.webm" type="video/webm" />
+          <source src="video/optimized/CW_Product_Fi.webm" type="video/webm" />
         </video>
         <!-- <div class="hero-video-icon">&#9654;</div> -->
       </a>
